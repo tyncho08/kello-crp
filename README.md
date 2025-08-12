@@ -1,22 +1,22 @@
 # Kello CRP
 
-Este repositorio contiene el proyecto Kello CRP, un sistema desarrollado en COBOL.
+This repository contains the Kello CRP project, a system developed in COBOL.
 
-## Estructura del Proyecto
+## Project Structure
 
-- `legacy/` - Contiene el código legacy original en COBOL
-  - Archivos `.cbl` - Programas principales COBOL
-  - Archivos `.cpy` - Copybooks (librerías de código reutilizable)
-  - Archivos `.cpb` - Archivos de parámetros del compilador
+- `legacy/` - Contains the original legacy COBOL code
+  - `.cbl` files - Main COBOL programs
+  - `.cpy` files - Copybooks (reusable code libraries)
+  - `.cpb` files - Compiler parameter files
 
-- `sdd/` - Documentos SDD (System Design Document) del proyecto
-  - Esta carpeta contendrá los documentos de análisis y diseño del sistema
-  - Los prompts y análisis se mantendrán bajo control de versiones
+- `sdd/` - SDD (System Design Document) project documentation
+  - This folder will contain system analysis and design documents
+  - Prompts and analysis will be maintained under version control
 
-## Descripción
+## Description
 
-Este proyecto está siendo analizado y documentado para entender su funcionamiento y crear la documentación técnica correspondiente. El código legacy se mantiene en la carpeta `legacy/` mientras que los documentos de análisis y diseño del sistema se van agregando en la carpeta `sdd/`.
+This project is being analyzed and documented to understand its functionality and create the corresponding technical documentation. The legacy code is maintained in the `legacy/` folder while system analysis and design documents are being added to the `sdd/` folder.
 
-## Estado del Proyecto
+## Project Status
 
-El proyecto se encuentra en fase de análisis y documentación del código legacy existente.
+The project is currently in the analysis and documentation phase of the existing legacy code.
