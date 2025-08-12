@@ -1,0 +1,430 @@
+[
+  {
+    "question": "1. What is the system's main architectural pattern?",
+    "answer": "Traditional COBOL mainframe architecture with Presentation Layer (Dialog System-based user interfaces), Business Logic Layer (COBOL programs with embedded business rules), Data Access Layer (VSAM indexed files with COPY books for data structures), and Integration Layer (File-based interfaces for external systems)",
+    "confidence": 1.0,
+    "evidence": [
+      {
+        "file": "legacy/dslang.cpy",
+        "line_start": 1,
+        "line_end": 50
+      }
+    ],
+    "notes": "Well-defined layered architecture following mainframe best practices"
+  },
+  {
+    "question": "2. What are the key modules and their internal dependencies?",
+    "answer": "Customer Management (CG* programs), Receivables Management (CR* programs), Payment Processing (Banking integration via CRP91* programs), Reporting and Analytics (CRP05*, CRP06*, CRP10* programs), System Administration and Logging (LOG* files and utilities). CRP020 depends on: Data Files (CRD020, CRD021, CRD200, CRD201, CRD099), Master Files (CGD001, CGD010, CGD020, CXD020, CAD002, CAD018, CRD001), Support (LOG001, LOG002, LOG003, LOGACESS)",
+    "confidence": 1.0,
+    "evidence": [
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 20,
+        "line_end": 35
+      },
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 40,
+        "line_end": 55
+      }
+    ],
+    "notes": "Clear modular structure with well-defined functional areas and dependencies"
+  },
+  {
+    "question": "3. Which components are most tightly coupled and might complicate migration?",
+    "answer": "CRP020 (Main receivables processor) shows high coupling with multiple data files (CRD020, CRD021, CRD200, CRD201, CRD099) and master files (CGD001, CGD010, CGD020, CXD020, CAD002, CAD018, CRD001). Banking integration module CRP9100 is tightly coupled with carrier information in receivables records",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 20,
+        "line_end": 55
+      }
+    ],
+    "notes": "Core transaction processor has extensive dependencies indicating tight coupling"
+  },
+  {
+    "question": "4. What external libraries does the system use?",
+    "answer": "Micro Focus Dialog System framework for user interface management, Dialog System with ListView and Windows components for object-oriented interface",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 381,
+        "line_end": 387
+      },
+      {
+        "file": "legacy/CRP100.cbl",
+        "line_start": 889,
+        "line_end": 896
+      }
+    ],
+    "notes": "Primary external dependency is on Micro Focus Dialog System"
+  },
+  {
+    "question": "5. Which parts depend on specific hardware or local configurations?",
+    "answer": "COBOL Runtime requires Micro Focus COBOL with Dialog System support, VSAM or compatible indexed file system, Mainframe or compatible environment with batch processing capabilities, sufficient working storage for concurrent user sessions. Banking interfaces require support for remittance file generation and processing",
+    "confidence": 1.0,
+    "evidence": [
+      {
+        "file": "legacy/PARAMETR.CPY",
+        "line_start": 1,
+        "line_end": 8
+      }
+    ],
+    "notes": "System has specific mainframe/VSAM requirements and banking interface dependencies"
+  },
+  {
+    "question": "6. Are there obsolete or unused modules?",
+    "answer": "Not specified in the SDD",
+    "confidence": 1.0,
+    "evidence": [],
+    "notes": "No mention of obsolete or unused modules in the documentation"
+  },
+  {
+    "question": "7. Which parts of the system handle authentication?",
+    "answer": "User authentication through parameter validation, role-based access control via menu system integration, User access tracking with LOGACESS file system",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 396,
+        "line_end": 399
+      }
+    ],
+    "notes": "Authentication is handled through parameter validation and menu system integration"
+  },
+  {
+    "question": "8. What communication protocols are used between modules?",
+    "answer": "File-based interfaces for external systems, standardized copybook usage for data structure consistency between modules",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "file": "legacy/CRPX020.CPY",
+        "line_start": 1,
+        "line_end": 28
+      }
+    ],
+    "notes": "Communication appears to be primarily file-based with shared data structures"
+  },
+  {
+    "question": "9. Is the system designed for parallel or multithreaded execution?",
+    "answer": "Not specified in the SDD",
+    "confidence": 1.0,
+    "evidence": [],
+    "notes": "No explicit mention of parallel or multithreaded design patterns"
+  },
+  {
+    "question": "10. Where are critical configurations defined (files or constants)?",
+    "answer": "Centralized configuration via PARAMETR copybook, Company Data through enterprise referencing, Date/Time Services through standardized temporal processing utilities",
+    "confidence": 1.0,
+    "evidence": [
+      {
+        "file": "legacy/PARAMETR.CPY",
+        "line_start": 1,
+        "line_end": 8
+      },
+      {
+        "file": "legacy/CBDATA.cpy",
+        "line_start": 1,
+        "line_end": 7
+      }
+    ],
+    "notes": "Configuration is centralized through specific copybooks for parameters and company data"
+  },
+  {
+    "question": "11. What are the main inputs and outputs of the system?",
+    "answer": "Main inputs: Customer transactions, payments, adjustments, title situation codes and descriptions, planned payment schedules. Main outputs: Updated receivables records, transaction logs, financial forecasting data, aging analysis reports, remittance files for banking integration (CBDDMMxx.REM format)",
+    "confidence": 1.0,
+    "evidence": [
+      {
+        "file": "legacy/crp001.cbl",
+        "line_start": 4,
+        "line_end": 7
+      },
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 4,
+        "line_end": 9
+      },
+      {
+        "file": "legacy/crp9100.cbl",
+        "line_start": 2,
+        "line_end": 7
+      }
+    ],
+    "notes": "Well-defined inputs and outputs for various business functions"
+  },
+  {
+    "question": "12. What APIs does the system expose and what endpoints does it have?",
+    "answer": "Not specified in the SDD",
+    "confidence": 1.0,
+    "evidence": [],
+    "notes": "No mention of APIs or endpoints - appears to be a traditional file-based system"
+  },
+  {
+    "question": "13. What data formats does it handle (JSON, XML, binary, etc.)?",
+    "answer": "VSAM indexed files, YYYYMMDD date format, standardized remittance files (CBDDMMxx.REM format), fixed-length COBOL record structures with copybook definitions",
+    "confidence": 1.0,
+    "evidence": [
+      {
+        "file": "legacy/CRPW020.CPY",
+        "line_start": 1,
+        "line_end": 58
+      },
+      {
+        "file": "legacy/crp9100.cbl",
+        "line_start": 4,
+        "line_end": 7
+      }
+    ],
+    "notes": "Traditional mainframe data formats - no modern formats like JSON or XML mentioned"
+  },
+  {
+    "question": "14. Are there explicit data validations in the code?",
+    "answer": "Transaction input validation and customer verification, business rule checking in validation phase, input data validation and business rule checking as part of standard transaction processing pattern",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 401,
+        "line_end": 485
+      },
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 1048,
+        "line_end": 1096
+      }
+    ],
+    "notes": "Validation is part of the standard transaction processing pattern"
+  },
+  {
+    "question": "15. What events trigger key processes?",
+    "answer": "Event-driven programming model through Dialog System, transaction input validation triggers customer verification, payment method processing triggers balance calculation and status updates",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 381,
+        "line_end": 387
+      },
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 401,
+        "line_end": 485
+      }
+    ],
+    "notes": "Event-driven model through Dialog System with transaction-triggered processes"
+  },
+  {
+    "question": "16. Which parts depend on timezone or locale settings?",
+    "answer": "Date/Time Services with standardized temporal processing utilities",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "file": "legacy/CBDATA.cpy",
+        "line_start": 1,
+        "line_end": 7
+      }
+    ],
+    "notes": "Limited information about timezone/locale dependencies"
+  },
+  {
+    "question": "17. What known bugs or errors are documented?",
+    "answer": "Not specified in the SDD",
+    "confidence": 1.0,
+    "evidence": [],
+    "notes": "No documented bugs or errors mentioned in the SDD"
+  },
+  {
+    "question": "18. Where is logging and auditing managed?",
+    "answer": "Comprehensive audit logging across all transaction types via LOG001/LOG002/LOG003 files with user, timestamp, operation type (I=Insert, A=Alter, E=Exclude), affected files, and record data. User access tracking with LOGACESS file system, transaction rollback capabilities through status management",
+    "confidence": 1.0,
+    "evidence": [
+      {
+        "file": "legacy/LOGW001.CPY",
+        "line_start": 1,
+        "line_end": 19
+      },
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 146,
+        "line_end": 166
+      }
+    ],
+    "notes": "Comprehensive logging and auditing system with detailed operation tracking"
+  },
+  {
+    "question": "19. Which functions are critical for security?",
+    "answer": "User authentication through parameter validation, role-based access control via menu system integration, audit trail maintenance for compliance requirements, data access logging for security monitoring",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 396,
+        "line_end": 399
+      }
+    ],
+    "notes": "Security functions include authentication, access control, and audit trails"
+  },
+  {
+    "question": "20. What tasks run on a scheduled basis (cron jobs, internal schedulers)?",
+    "answer": "Not specified in the SDD",
+    "confidence": 1.0,
+    "evidence": [],
+    "notes": "No mention of scheduled tasks or cron jobs in the documentation"
+  },
+  {
+    "question": "21. What external dependencies might not be compatible with a cloud environment?",
+    "answer": "VSAM or compatible indexed file system, Mainframe or compatible environment with batch processing capabilities, Micro Focus COBOL with Dialog System support, Banking interfaces requiring support for remittance file generation and processing, Printing services for report generation and hard-copy output capabilities",
+    "confidence": 1.0,
+    "evidence": [
+      {
+        "file": "legacy/PARAMETR.CPY",
+        "line_start": 1,
+        "line_end": 8
+      }
+    ],
+    "notes": "Multiple mainframe-specific dependencies that would require significant adaptation for cloud"
+  },
+  {
+    "question": "22. Which modules have the highest cyclomatic complexity?",
+    "answer": "CRP020 (Main receivables processor) with transaction input validation, customer verification, payment method processing, balance calculation, status updates, audit log generation, and annotation creation. CRP100 with dynamic work file creation, multiple sort orders, date range filtering, and ListView-based user interface",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 401,
+        "line_end": 485
+      },
+      {
+        "file": "legacy/CRP100.cbl",
+        "line_start": 297,
+        "line_end": 317
+      }
+    ],
+    "notes": "CRP020 and CRP100 show multiple processing paths indicating higher complexity"
+  },
+  {
+    "question": "23. Where are language features used that don't exist in the new tech stack?",
+    "answer": "VSAM indexed file access patterns, COBOL-specific features like START/READ NEXT patterns, Dialog System event-driven programming model, COPY books for data structures, COBOL-specific data types and field definitions",
+    "confidence": 1.0,
+    "evidence": [
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 687,
+        "line_end": 713
+      },
+      {
+        "file": "legacy/CRPW020.CPY",
+        "line_start": 1,
+        "line_end": 58
+      }
+    ],
+    "notes": "Extensive use of COBOL-specific features that don't have direct equivalents in modern languages"
+  },
+  {
+    "question": "24. What components require intensive manual testing?",
+    "answer": "Banking integration module CRP9100 with remittance file generation, Multi-currency support (Real and Dollar), Interest and penalty calculation capabilities, Complex transaction processing with multiple document types (Boleto, Duplicate/Promissory, Event Organization, Automatic Debit, Credit Card)",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "file": "legacy/crp9100.cbl",
+        "line_start": 4,
+        "line_end": 7
+      },
+      {
+        "file": "legacy/CRPW020.CPY",
+        "line_start": 20,
+        "line_end": 23
+      },
+      {
+        "file": "legacy/CRPW020.CPY",
+        "line_start": 30,
+        "line_end": 56
+      }
+    ],
+    "notes": "Financial calculations and banking integrations typically require extensive testing"
+  },
+  {
+    "question": "25. Which parts of the system are poorly documented?",
+    "answer": "Not specified in the SDD",
+    "confidence": 1.0,
+    "evidence": [],
+    "notes": "The SDD itself indicates well-documented interfaces and field usage, but doesn't identify poorly documented areas"
+  },
+  {
+    "question": "26. Which code areas have the highest commit change frequency?",
+    "answer": "Not specified in the SDD",
+    "confidence": 1.0,
+    "evidence": [],
+    "notes": "No version control or change frequency information provided in the SDD"
+  },
+  {
+    "question": "27. Are there integrations with unsupported systems?",
+    "answer": "Banking system integration through CRP9100 (Bradesco bank file generation) may depend on specific banking protocols, Dialog System framework dependency on Micro Focus COBOL environment",
+    "confidence": 0.7,
+    "evidence": [
+      {
+        "file": "legacy/crp9100.cbl",
+        "line_start": 2,
+        "line_end": 7
+      }
+    ],
+    "notes": "Banking integrations and proprietary Dialog System may face support challenges"
+  },
+  {
+    "question": "28. Which parts depend on specific OS versions?",
+    "answer": "Mainframe or compatible environment with batch processing capabilities, COBOL Runtime requiring Micro Focus COBOL with Dialog System support, VSAM or compatible indexed file system requirements",
+    "confidence": 1.0,
+    "evidence": [
+      {
+        "file": "legacy/PARAMETR.CPY",
+        "line_start": 1,
+        "line_end": 8
+      }
+    ],
+    "notes": "Strong dependency on mainframe OS and specific COBOL runtime environment"
+  },
+  {
+    "question": "29. Where is there potential to improve performance via parallelism or asynchrony?",
+    "answer": "Batch processing for large data volumes, Work file strategies for complex reporting operations, Multiple access paths for different business scenarios, Sequential processing with START/READ NEXT patterns could benefit from parallel processing",
+    "confidence": 0.8,
+    "evidence": [
+      {
+        "file": "legacy/CRP100.cbl",
+        "line_start": 652,
+        "line_end": 680
+      },
+      {
+        "file": "legacy/crp020.cbl",
+        "line_start": 687,
+        "line_end": 713
+      }
+    ],
+    "notes": "Current sequential processing patterns could benefit from parallelization"
+  },
+  {
+    "question": "30. Which parts could be migrated independently to apply the Strangler Fig pattern?",
+    "answer": "Reporting and Analytics module (CRP05*, CRP06*, CRP10* programs) with screen reports and export capabilities, Banking Integration Module (CRP91* programs) with standardized file generation, System Administration and Logging (LOG* files and utilities) as separate audit system, Customer Management module (CG* programs) as standalone master data management",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "file": "legacy/crp050.cbl",
+        "line_start": 4,
+        "line_end": 11
+      },
+      {
+        "file": "legacy/crp9100.cbl",
+        "line_start": 4,
+        "line_end": 7
+      },
+      {
+        "file": "legacy/CRP100.cbl",
+        "line_start": 591,
+        "line_end": 595
+      }
+    ],
+    "notes": "Modules with clear boundaries and limited dependencies are good candidates for independent migration"
+  }
+]
