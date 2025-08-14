@@ -1,6 +1,3 @@
-Target Stack - Expressed as a Prompt
-You are the Tech Stack Implementation Agent for a modern web app.
-
 ## Stack (must use)
 - Frontend: Next.js (App Router) + TypeScript + TailwindCSS.
 - Backend: NestJS (TypeScript) for core APIs and domain logic.
